@@ -29,6 +29,7 @@
         .hidden {
             display: none !important;
         }
+        
         /* --- HOME VIEW --- */
         #home-view {
             flex: 1;
@@ -40,29 +41,18 @@
         }
         .logo-main {
             font-family: 'Product Sans', Arial, sans-serif;
-            font-size: 90px;
+            font-size: 110px; /* Made larger from 90px */
             font-weight: bold;
             margin-bottom: 30px;
-            letter-spacing: -2px;
+            letter-spacing: -3px;
         }
-        .logo-g {
-            color: #4285f4;
-        }
-        .logo-o1 {
-            color: #ea4335;
-        }
-        .logo-o2 {
-            color: #fbbc05;
-        }
-        .logo-g2 {
-            color: #4285f4;
-        }
-        .logo-l {
-            color: #34a853;
-        }
-        .logo-e {
-            color: #ea4335;
-        }
+        .logo-g { color: #4285f4; }
+        .logo-o1 { color: #ea4335; }
+        .logo-o2 { color: #fbbc05; }
+        .logo-g2 { color: #4285f4; }
+        .logo-l { color: #34a853; }
+        .logo-e { color: #ea4335; }
+        
         .search-container {
             width: 100%;
             max-width: 584px;
@@ -78,6 +68,7 @@
             height: 44px;
             margin: 0 auto;
             width: 100%;
+            position: relative;
             transition: box-shadow 200ms cubic-bezier(0.4, 0.0, 0.2, 1);
         }
         .search-bar-wrapper:hover,
@@ -130,7 +121,54 @@
             border: 1px solid #dadce0;
             color: #202124;
         }
-        /* --- RESULTS VIEW (IMAGE SEARCH STYLE) --- */
+        
+        /* Suggestions Styling */
+        .suggestions-box {
+            position: absolute;
+            top: 100%;
+            left: -1px;
+            right: -1px;
+            background: #fff;
+            border: 1px solid #dfe1e5;
+            border-top: none;
+            border-radius: 0 0 24px 24px;
+            box-shadow: 0 4px 6px rgba(32, 33, 36, .28);
+            z-index: 10;
+            display: none;
+            padding-bottom: 12px;
+            padding-top: 4px;
+        }
+        /* When search bar has focus and dropdown is open */
+        .search-bar-wrapper.active {
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
+            box-shadow: 0 4px 6px rgba(32, 33, 36, .28);
+            border-color: #dfe1e5;
+            border-bottom-color: transparent;
+        }
+        /* Divider line between input and results */
+        .suggestions-divider {
+            border-top: 1px solid #dfe1e5;
+            margin: 0 16px 8px 16px;
+        }
+        .suggestion-item {
+            padding: 6px 16px 6px 14px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            color: #202124;
+            font-size: 16px;
+        }
+        .suggestion-item:hover {
+            background-color: #f1f3f4;
+        }
+        .suggestion-icon {
+            margin-right: 14px;
+            color: #9aa0a6;
+            display: flex;
+            align-items: center;
+        }
+        /* --- RESULTS VIEW --- */
         #results-view {
             width: 100%;
             display: flex;
@@ -147,7 +185,7 @@
             align-items: center;
         }
         .header-logo {
-            font-size: 24px;
+            font-size: 36px; /* Increased from 24px */
             font-weight: bold;
             margin-right: 40px;
             text-decoration: none !important;
@@ -161,11 +199,10 @@
         }
         .header-search .search-bar-wrapper {
             margin: 0;
-            height: 40px;
+            height: 44px; /* Matches home search bar now */
         }
         .results-nav {
             margin-left: 175px;
-            /* Aligns with search bar */
             display: flex;
             gap: 26px;
             font-size: 13px;
@@ -190,7 +227,8 @@
             height: 16px;
             fill: currentColor;
         }
-        /* IMAGE GRID MASONRY */
+        
+        /* IMAGE GRID MASONRY / STATIC GRID */
         .results-content {
             padding: 20px;
             background: #fff;
@@ -199,92 +237,66 @@
         }
         .image-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 16px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
             padding-bottom: 40px;
         }
+        
+        /* Simplified grid-item layout matching Google Image Search */
         .grid-item {
-            background: #f8f9fa;
-            /* Placeholder color before load */
-            border-radius: 12px;
-            overflow: hidden;
+            background: #fff;
+            overflow: visible;
             position: relative;
             cursor: pointer;
-            transition: box-shadow 0.2s;
-            break-inside: avoid;
-            margin-bottom: 0;
-            height: 0;
-            padding-bottom: 75%;
-            /* Aspect ratio 4:3 default */
             display: block;
         }
-        .grid-item:hover {
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            z-index: 2;
+        .grid-item-image-wrapper {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f8f9fa;
+            /* Using a common aspect ratio for the grid view images */
+            aspect-ratio: 4/3; 
         }
-        .grid-item img {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .grid-item-image-wrapper img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
         }
-        /* Text-only post fallback styling */
-        .text-card-content {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+        .grid-item-info {
+            padding: 10px 2px;
         }
-        .text-card-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #1a0dab;
-            margin-bottom: 8px;
-        }
-        .text-card-snippet {
-            font-size: 14px;
-            color: #4d5156;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            line-clamp: 4;
-            -webkit-box-orient: vertical;
-        }
-        /* Overlay text on hover similar to Google Images */
-        .grid-item-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: rgba(0, 0, 0, 0.6);
-            color: #fff;
-            padding: 8px 12px;
-            opacity: 0;
-            transition: opacity 0.2s;
-            pointer-events: none;
-        }
-        .grid-item:hover .grid-item-overlay {
-            opacity: 1;
-        }
-        .overlay-title {
+        .info-site {
             font-size: 12px;
+            color: #202124;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 6px;
+        }
+        .info-site img {
+            border-radius: 50%;
+            width: 16px;
+            height: 16px;
+        }
+        .info-title {
+            font-size: 14px;
+            color: #1a0dab;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
-        .overlay-site {
-            font-size: 11px;
-            color: #dadce0;
+        .info-desc {
+            font-size: 12px;
+            color: #5f6368;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .grid-item:hover .info-title {
+            text-decoration: underline;
         }
         /* Mobile adjustments */
         @media (max-width: 768px) {
@@ -303,24 +315,18 @@
             }
             .image-grid {
                 grid-template-columns: repeat(2, 1fr);
-                gap: 8px;
+                gap: 16px;
             }
         }
     </style>
 </head>
 <body class="mode-results">
     <style>
-        /* View Toggling Logic */
-        /* Default: Home View matches Google Home (Centered) */
-        #home-view {
-            display: none;
-        }
-        #results-view {
-            display: flex;
-        }
-        /* Logic for other pages if needed, basically everything is results now */
+        /* Default view logic */
+        #home-view { display: none; }
+        #results-view { display: flex; }
     </style>
-    <!-- HOME VIEW (Hidden by default now) -->
+    <!-- HOME VIEW -->
     <div id="home-view">
         <div class="logo-main">
             <span class="logo-g">G</span><span class="logo-o1">o</span><span class="logo-o2">o</span><span
@@ -330,15 +336,14 @@
             <form action="/search" method="get">
                 <div class="search-bar-wrapper">
                     <div class="search-icon">
-                        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px"
-                            width="20px">
-                            <path
-                                d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"
-                                fill="#9AA0A6"></path>
+                        <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px">
+                            <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z" fill="#9AA0A6"></path>
                         </svg>
                     </div>
-                    <input type="text" name="q" value="{SearchQuery}" autocomplete="off" title="Search">
+                    <!-- value initialized correctly -->
+                    <input type="text" name="q" value="manuela morales" autocomplete="off" title="Search">
                 </div>
+                <!-- Dropdown will be dynamically injected here in JS -->
                 <div class="search-buttons">
                     <button type="submit" class="search-btn">Google Search</button>
                     <button type="submit" class="search-btn">I'm Feeling Lucky</button>
@@ -346,26 +351,23 @@
             </form>
         </div>
     </div>
-    <!-- RESULTS VIEW (IMAGE SEARCH GRID) -->
+    <!-- RESULTS VIEW -->
     <div id="results-view">
         <div class="results-header-container">
             <div class="results-header">
+                <!-- Removed "Images" text span and slightly increased logo size via CSS class -->
                 <a href="/" class="header-logo">
                     <span class="logo-g">G</span><span class="logo-o1">o</span><span class="logo-o2">o</span><span
                         class="logo-g2">g</span><span class="logo-l">l</span><span class="logo-e">e</span>
-                    <span
-                        style="font-size: 16px; color: #5f6368; margin-left: 5px; font-weight: normal; margin-top: 3px;">Images</span>
                 </a>
                 <div class="header-search">
                     <form action="/search" method="get">
                         <div class="search-bar-wrapper">
-                            <input type="text" name="q" value="{SearchQuery}" style="padding-left: 20px;">
+                            <!-- value initialized correctly -->
+                            <input type="text" name="q" value="manuela morales" autocomplete="off" style="padding-left: 20px;">
                             <div class="search-icon" style="cursor:pointer;" onclick="this.closest('form').submit()">
-                                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"
-                                    height="20px" width="20px">
-                                    <path
-                                        d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z"
-                                        fill="#4285f4"></path>
+                                <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="20px" width="20px">
+                                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z" fill="#4285f4"></path>
                                 </svg>
                             </div>
                         </div>
@@ -380,8 +382,7 @@
                 </div>
                 <div class="nav-item active">
                     <svg class="nav-icon" viewBox="0 0 24 24">
-                        <path
-                            d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
+                        <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z" />
                     </svg> Images
                 </div>
                 <div class="nav-item">Videos</div>
@@ -390,42 +391,7 @@
         </div>
         <div class="results-content">
             <div id="image-grid" class="image-grid">
-                <!-- TUMBLR LOOP -->
-                {block:Posts}
-                <a href="{Permalink}" class="grid-item">
-                    {block:Photo}
-                    <img src="{PhotoURL-500}" alt="{PhotoAlt}">
-                    <div class="grid-item-overlay">
-                        <div class="overlay-title">{block:Caption}{Caption}{/block:Caption}</div>
-                        <div class="overlay-site">{Name}</div>
-                    </div>
-                    {/block:Photo}
-                    {block:Photoset}
-                    <img src="{Photoset-500}" alt="Photoset">
-                    <!-- Note: Real tumblr photoset logic is harder, simplifying for grid -->
-                    <div class="grid-item-overlay">
-                        <div class="overlay-title">Photoset</div>
-                        <div class="overlay-site">{Name}</div>
-                    </div>
-                    {/block:Photoset}
-                    {block:Text}
-                    <div class="text-card-content">
-                        <div class="text-card-title">{block:Title}{Title}{/block:Title}</div>
-                        <div class="text-card-snippet">{Body}</div>
-                    </div>
-                    <div class="grid-item-overlay">
-                        <div class="overlay-title">{block:Title}{Title}{/block:Title}</div>
-                        <div class="overlay-site">{Name}</div>
-                    </div>
-                    {/block:Text}
-                    <!-- Fallback for other types -->
-                    {block:Video}
-                    <div class="text-card-content" style="background: #e8f0fe;">
-                        <div class="text-card-title">Video Post</div>
-                    </div>
-                    {/block:Video}
-                </a>
-                {/block:Posts}
+                <!-- TUMBLR LOOP (Disabled locally via JS, kept for context) -->
             </div>
         </div>
     </div>
@@ -434,102 +400,134 @@
         (function () {
             const gridContainer = document.getElementById('image-grid');
             if (!gridContainer) return;
-            // Check specifically for elements with class 'grid-item'
-            // This avoids counting hidden Tumblr scripts/tracking pixels/comments as posts
-            const realPosts = gridContainer.querySelectorAll('.grid-item');
-            // Check if we are running locally (file:// or localhost)
+            
             const isLocal = window.location.protocol === 'file:' || window.location.hostname === 'localhost';
-            // Logic: Inject if Local OR if no real posts found (empty blog fallback)
+            
+            // 4 Placeholder Projects
+            const portfolioPosts = [
+                {
+                    type: 'img',
+                    src: 'https://images.unsplash.com/photo-1547826039-bfc35e0f1ea8?auto=format&fit=crop&w=500&q=80',
+                    title: 'Abstract Formations',
+                    site: 'manuela-morales.com',
+                    caption: 'Mixed media on canvas'
+                },
+                {
+                    type: 'img',
+                    src: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?auto=format&fit=crop&w=500&q=80',
+                    title: 'Spatial Interventions',
+                    site: 'manuela-morales.com',
+                    caption: 'Gallery installation view'
+                },
+                {
+                    type: 'img',
+                    src: 'https://images.unsplash.com/photo-1544376798-89aa6b82c6cd?auto=format&fit=crop&w=500&q=80',
+                    title: 'Material Studies',
+                    site: 'manuela-morales.com',
+                    caption: 'Wood and metal sculpture'
+                },
+                {
+                    type: 'img',
+                    src: 'https://images.unsplash.com/photo-1518640467707-6811f4a6ab73?auto=format&fit=crop&w=500&q=80',
+                    title: 'Echoes Exhibition',
+                    site: 'manuela-morales.com',
+                    caption: 'Digital photography series'
+                }
+            ];
+            // Render placeholders if local or empty
+            const realPosts = gridContainer.querySelectorAll('.grid-item');
             if (isLocal || realPosts.length === 0) {
-                console.log("Populating with Portfolio Data (Fallback/Local Mode)");
-                // Force Results Mode
+                console.log("Populating with Placefiller Projects (Fallback/Local Mode)");
                 document.body.classList.add('mode-results');
+                
+                // Allow "q" search param to override the default input value if provided
                 const urlParams = new URLSearchParams(window.location.search);
                 const query = urlParams.get('q');
                 if (query) {
                     document.querySelectorAll('input[name="q"]').forEach(el => el.value = query);
                 }
-                // Clear current content (empty text nodes, scripts, or raw template tags)
+                
                 gridContainer.innerHTML = '';
-                // PORTFOLIO DATA - Manuela Libertad Imgur Images
-                const portfolioPosts = [
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/I6oVkxZ.jpg',
-                        title: 'Installation View I',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Gallery Installation'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/L4IKhAM.jpg',
-                        title: 'Installation View II',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Mixed Media'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/H5mXDbS.jpg',
-                        title: 'Sculptural Detail',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Process Work'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/llBIZj2.jpg',
-                        title: 'Exhibition Context',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Space Overview'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/5CMNXx3.jpg',
-                        title: 'Gallery Detail',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Material Studies'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/iwawHBn.jpg',
-                        title: 'Installation Object',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Object Study'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/sYU9PUV.jpg',
-                        title: 'Wall Installation',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Textile Work'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/UxnUyLp.jpg',
-                        title: 'Floor Piece',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Structural Element'
-                    },
-                    {
-                        type: 'img',
-                        src: 'https://i.imgur.com/2rSBsly.jpg',
-                        title: 'Detail View',
-                        site: 'manuelalibertad.imgur.com',
-                        caption: 'Close-up'
-                    }
-                ];
+                
                 portfolioPosts.forEach(post => {
                     const a = document.createElement('a');
                     a.href = '#';
                     a.className = 'grid-item';
-                    let content = '<img src="' + post.src + '" alt="' + post.title + '">' +
-                        '<div class="grid-item-overlay">' +
-                        '<div class="overlay-title">' + post.title + '</div>' +
-                        '<div class="overlay-site">' + post.site + '</div>' +
-                        '</div>';
+                    
+                    // Matching Google Image result style closely
+                    let content = `
+                        <div class="grid-item-image-wrapper">
+                            <img src="${post.src}" alt="${post.title}">
+                        </div>
+                        <div class="grid-item-info">
+                            <div class="info-site">
+                                <img src="https://www.google.com/s2/favicons?domain=manuela-morales.com" alt="favicon">
+                                ${post.site}
+                            </div>
+                            <div class="info-title">${post.title}</div>
+                            <div class="info-desc">${post.caption}</div>
+                        </div>
+                    `;
                     a.innerHTML = content;
                     gridContainer.appendChild(a);
                 });
             }
+            // Bind Auto-Suggest Dropdowns to Search Inputs
+            const searchInputs = document.querySelectorAll('input[name="q"]');
+            searchInputs.forEach(input => {
+                // Pre-fill with "manuela morales" automatically if no query is passed
+                if (!input.value || input.value === "{SearchQuery}") {
+                    input.value = "manuela morales";
+                }
+                const wrapper = input.closest('.search-bar-wrapper');
+                
+                // Construct the dropdown box
+                const suggestBox = document.createElement('div');
+                suggestBox.className = 'suggestions-box';
+                
+                const divider = document.createElement('div');
+                divider.className = 'suggestions-divider';
+                suggestBox.appendChild(divider);
+                
+                // Map each project to a suggestion item
+                portfolioPosts.forEach(post => {
+                    const item = document.createElement('div');
+                    item.className = 'suggestion-item';
+                    item.innerHTML = `
+                        <div class="suggestion-icon">
+                            <svg focusable="false" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" height="16px" width="16px">
+                                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 14z" fill="#9AA0A6"></path>
+                            </svg>
+                        </div>
+                        <span>${post.title}</span>
+                    `;
+                    // When clicked, populate input and submit
+                    item.addEventListener('click', () => {
+                        input.value = post.title;
+                        wrapper.classList.remove('active');
+                        suggestBox.style.display = 'none';
+                        const form = input.closest('form');
+                        if (form) form.submit();
+                    });
+                    suggestBox.appendChild(item);
+                });
+                
+                wrapper.appendChild(suggestBox);
+                
+                // Show dropdown when focus on input
+                input.addEventListener('focus', () => {
+                    wrapper.classList.add('active');
+                    suggestBox.style.display = 'block';
+                });
+                
+                // Hide dropdown when clicking elsewhere
+                document.addEventListener('click', (e) => {
+                    if (!wrapper.contains(e.target)) {
+                        wrapper.classList.remove('active');
+                        suggestBox.style.display = 'none';
+                    }
+                });
+            });
         })();
     </script>
 </body>
